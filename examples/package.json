@@ -1,0 +1,13 @@
+{
+  "name": "quantum-rsi-websocket-demo",
+  "version": "1.0.0",
+  "description": "WebSocket demo for Quantum RSI trading system",
+  "main": "websocket_demo.js",
+  "scripts": {
+    "start": "node websocket_demo.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "web3": "^4.0.2"
+  }
+} 

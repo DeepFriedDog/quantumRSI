@@ -1,0 +1,148 @@
+QUANTUM STOCK STRATEGY PERFORMANCE SUMMARY
+================================================================================
+
+1. OVERALL STRATEGY PERFORMANCE (sorted by average return):
+--------------------------------------------------------------------------------
+1. Quantum Stock - Improved Aggressive
+   Win Rate: 38.7%
+   Average Return: 33.9%
+   Average Max Drawdown: 11.1%
+   Average Profit Factor: 1.41
+   Risk-Adjusted Return: 3.99
+   Total Trades: 27866
+
+2. Quantum Stock - Aggressive
+   Win Rate: 51.7%
+   Average Return: 30.9%
+   Average Max Drawdown: 10.6%
+   Average Profit Factor: 1.43
+   Risk-Adjusted Return: 4.34
+   Total Trades: 28345
+
+3. Quantum Stock - Improved Balanced
+   Win Rate: 56.5%
+   Risk-Adjusted Return: 3.25
+   Total Trades: 20263
+
+5. Quantum Stock - Conservative
+   Win Rate: 63.4%4067
+   Average Return: 21.8%
+   Average Max Drawdown: 10.5%nservative
+   Average Profit Factor: 1.45
+   Risk-Adjusted Return: 2.99
+   Total Trades: 17402n: 11.3%
+   Average Profit Factor: 1.40
+6. Quantum Stock - Balanced25
+   Win Rate: 57.5%
+   Average Return: 20.3%
+   Average Max Drawdown: 10.5%
+   Average Profit Factor: 1.31
+   Risk-Adjusted Return: 2.85
+   Total Trades: 22322
+
+7. Quantum Stock - Paper Model
+   Win Rate: 49.7%
+   Average Return: 3.8%
+   Average Max Drawdown: 15.3%
+   Average Profit Factor: 1.02
+   Risk-Adjusted Return: 0.70
+   Total Trades: 21243
+
+
+2. PERFORMANCE BY TIMEFRAME:
+--------------------------------------------------------------------------------
+
+Timeframe: 15m
+1. Quantum Stock - Balanced: 37.7% return, 61.3% win rate
+2. Quantum Stock - Aggressive: 35.4% return, 52.6% win rate
+3. Quantum Stock - Conservative: 32.8% return, 66.1% win rate
+4. Quantum Stock - Improved Conservative: 31.6% return, 52.1% win rate
+5. Quantum Stock - Improved Balanced: 30.1% return, 56.5% win rate
+6. Quantum Stock - Improved Aggressive: 28.9% return, 37.1% win rate
+7. Quantum Stock - Paper Model: 4.0% return, 50.3% win rate
+
+Timeframe: 1h
+1. Quantum Stock - Improved Aggressive: 44.7% return, 44.3% win rate
+2. Quantum Stock - Aggressive: 44.6% return, 57.1% win rate
+3. Quantum Stock - Improved Balanced: 41.9% return, 62.5% win rate
+4. Quantum Stock - Conservative: 38.4% return, 68.7% win rate
+5. Quantum Stock - Improved Conservative: 35.0% return, 55.9% win rate
+6. Quantum Stock - Balanced: 21.3% return, 60.3% win rate
+7. Quantum Stock - Paper Model: 1.5% return, 48.2% win rate
+
+Timeframe: 1m
+1. Quantum Stock - Aggressive: 16.5% return, 46.9% win rate
+2. Quantum Stock - Improved Aggressive: 14.4% return, 34.5% win rate
+3. Quantum Stock - Improved Balanced: 13.0% return, 51.4% win rate
+4. Quantum Stock - Improved Conservative: 8.1% return, 45.9% win rate
+5. Quantum Stock - Balanced: 7.6% return, 53.4% win rate
+6. Quantum Stock - Paper Model: 6.2% return, 50.8% win rate
+7. Quantum Stock - Conservative: 0.8% return, 58.0% win rate
+
+Timeframe: 30m
+1. Quantum Stock - Improved Aggressive: 46.3% return, 42.1% win rate
+2. Quantum Stock - Improved Balanced: 39.9% return, 58.3% win rate
+3. Quantum Stock - Aggressive: 32.1% return, 53.0% win rate
+4. Quantum Stock - Improved Conservative: 31.3% return, 52.1% win rate
+5. Quantum Stock - Balanced: 23.6% return, 58.3% win rate
+6. Quantum Stock - Conservative: 22.7% return, 63.8% win rate
+7. Quantum Stock - Paper Model: -11.2% return, 46.8% win rate
+
+Timeframe: 5m
+1. Quantum Stock - Improved Aggressive: 35.0% return, 35.6% win rate
+2. Quantum Stock - Improved Balanced: 27.7% return, 53.8% win rate
+3. Quantum Stock - Aggressive: 26.2% return, 48.8% win rate
+4. Quantum Stock - Paper Model: 18.2% return, 52.4% win rate
+5. Quantum Stock - Improved Conservative: 16.3% return, 47.7% win rate
+6. Quantum Stock - Conservative: 14.3% return, 60.6% win rate
+7. Quantum Stock - Balanced: 11.3% return, 54.3% win rate
+
+3. TOP 10 INDIVIDUAL STRATEGY-TOKEN-TIMEFRAME COMBINATIONS:
+--------------------------------------------------------------------------------
+1. Quantum Stock - Improved Aggressive on NEAR/USDT (1h)
+   Return: 82.1%, Win Rate: 42.9%, Trades: 56
+2. Quantum Stock - Improved Balanced on ETH/USDT (30m)
+   Return: 80.4%, Win Rate: 69.4%, Trades: 98
+3. Quantum Stock - Improved Aggressive on NEAR/USDT (5m)
+   Return: 80.1%, Win Rate: 36.6%, Trades: 618
+4. Quantum Stock - Aggressive on ETH/USDT (1h)
+   Return: 77.0%, Win Rate: 69.4%, Trades: 62
+5. Quantum Stock - Balanced on NEAR/USDT (15m)
+   Return: 66.5%, Win Rate: 62.0%, Trades: 166
+6. Quantum Stock - Improved Conservative on DOT/USDT (30m)
+   Return: 64.5%, Win Rate: 53.7%, Trades: 95
+7. Quantum Stock - Improved Balanced on DOT/USDT (1h)
+   Return: 64.1%, Win Rate: 60.0%, Trades: 55
+8. Quantum Stock - Improved Aggressive on NEAR/USDT (15m)
+   Return: 63.5%, Win Rate: 39.8%, Trades: 181
+9. Quantum Stock - Improved Conservative on DOT/USDT (1h)
+   Return: 63.3%, Win Rate: 60.5%, Trades: 43
+10. Quantum Stock - Conservative on NEAR/USDT (1h)
+   Return: 61.2%, Win Rate: 69.0%, Trades: 42
+
+4. HIGHEST WIN RATES (all combinations):
+--------------------------------------------------------------------------------
+1. Quantum Stock - Improved Balanced on BTC/USDT (1h): 77.3% win rate, 59.6% return
+2. Quantum Stock - Conservative on DOT/USDT (1h): 76.7% win rate, 59.2% return
+3. Quantum Stock - Conservative on ETH/USDT (15m): 72.0% win rate, 32.8% return
+4. Quantum Stock - Conservative on MATIC/USDT (1h): 71.7% win rate, 54.6% return
+5. Quantum Stock - Improved Balanced on ETH/USDT (1h): 71.4% win rate, 51.2% return
+
+5. HIGHEST RETURNS (all combinations):
+--------------------------------------------------------------------------------
+1. Quantum Stock - Improved Aggressive on NEAR/USDT (1h): 82.1% return, 42.9% win rate
+2. Quantum Stock - Improved Balanced on ETH/USDT (30m): 80.4% return, 69.4% win rate
+Original Models - Avg Return: 24.3%, Win Rate: 57.6%
+Improved Models - Avg Return: 29.6%, Win Rate: 48.7%
+Best Combined Win Rate & Return Performance:
+Strategy: Quantum Stock - Improved Balanced
+Token: ETH/USDT
+Timeframe: 30m
+Win Rate: 69.4%
+Return: 80.4%
+
+RECOMMENDATIONS:
+1. Best Overall Strategy: Quantum Stock - Improved Aggressive
+2. Best Timeframe: 1h
+3. Potential for Hybrid Approach: Combine Quantum Stock - Conservative (high win rate) with Quantum Stock - Improved Aggressive (high return)
+PS D:\Coding\Quantum RSI>

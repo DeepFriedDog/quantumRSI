@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum RSI Backtest Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #333;
+        }
+        .header p {
+            color: #666;
+        }
+        .results-container {
+            margin-top: 20px;
+        }
+        .metrics-table {
+            margin-top: 30px;
+        }
+        .plot-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .plot-image {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .strategy-card {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .strategy-card .card-header {
+            background-color: #f0f7ff;
+            font-weight: bold;
+        }
+        .parameter-summary {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .trade-stats {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Quantum RSI Backtest Results</h1>
+            <p>Results for {{ crypto }} on {{ timeframe }} timeframe</p>
+        </div>
+        
+        <div class="parameter-summary">
+            <h4>Backtest Parameters</h4>
+            <div class="row">
+                <div class="col-md-3">
+                    <p><strong>Cryptocurrency:</strong> {{ crypto }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p><strong>Timeframe:</strong> {{ timeframe }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p><strong>Start Date:</strong> {{ start_date }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p><strong>End Date:</strong> {{ end_date }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <p><strong>Initial Capital:</strong> ${{ initial_capital }}</p>
+                </div>
+                <div class="col-md-3">
+                    <p><strong>Strategy Type:</strong> {{ strategy_type }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Session ID:</strong> {{ session_id }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-container">
+            <h4>Results Summary</h4>
+            
+            {% if results|length > 1 %}
+                <div class="row">
+                {% for result in results %}
+                    <div class="col-md-6">
+                        <div class="card strategy-card">
+                            <div class="card-header">
+                                {{ result.strategy }}
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td>Total Trades</td>
+                                            <td class="text-end trade-stats">{{ result.total_trades }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Win Rate</td>
+                                            <td class="text-end trade-stats">{{ result.win_rate|round(2) }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Net Profit</td>
+                                            <td class="text-end trade-stats">${{ result.net_profit|round(2) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Return</td>
+                                            <td class="text-end trade-stats">{{ result.return_pct|round(2) }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Max Drawdown</td>
+                                            <td class="text-end trade-stats">{{ result.max_drawdown|round(2) }}%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Profit Factor</td>
+                                            <td class="text-end trade-stats">{{ result.profit_factor|round(2) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            {% else %}
+                <div class="card strategy-card">
+                    <div class="card-header">
+                        {{ results[0].strategy }}
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <td>Total Trades</td>
+                                    <td class="text-end trade-stats">{{ results[0].total_trades }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Win Rate</td>
+                                    <td class="text-end trade-stats">{{ results[0].win_rate|round(2) }}%</td>
+                                </tr>
+                                <tr>
+                                    <td>Net Profit</td>
+                                    <td class="text-end trade-stats">${{ results[0].net_profit|round(2) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Return</td>
+                                    <td class="text-end trade-stats">{{ results[0].return_pct|round(2) }}%</td>
+                                </tr>
+                                <tr>
+                                    <td>Max Drawdown</td>
+                                    <td class="text-end trade-stats">{{ results[0].max_drawdown|round(2) }}%</td>
+                                </tr>
+                                <tr>
+                                    <td>Profit Factor</td>
+                                    <td class="text-end trade-stats">{{ results[0].profit_factor|round(2) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if plot_img %}
+            <div class="plot-container">
+                <h4>Equity Curve</h4>
+                <img src="data:image/png;base64,{{ plot_img }}" class="plot-image" alt="Equity Curve">
+            </div>
+            {% endif %}
+            
+            <div class="text-center mt-4">
+                <a href="/" class="btn btn-primary">Run Another Backtest</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

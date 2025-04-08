@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum RSI Backtest Interface</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #333;
+        }
+        .header p {
+            color: #666;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .results {
+            margin-top: 30px;
+            display: none;
+        }
+        .loading {
+            text-align: center;
+            display: none;
+            margin-top: 20px;
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+        .metric-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .metric-card h5 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .plot-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .plot-image {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .plot-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .quantum-explanation {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            border-left: 4px solid #0d6efd;
+        }
+        
+        /* Modal styles */
+        .chart-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            overflow: auto;
+        }
+        .chart-modal-content {
+            position: relative;
+            margin: auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 1200px;
+            text-align: center;
+        }
+        .chart-close {
+            color: #f1f1f1;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .chart-modal-image {
+            width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .zoom-btn {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Legend styles */
+        .legend-container {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+        @media (max-width: 768px) {
+            .d-none-mobile {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Quantum RSI Backtesting Tool</h1>
+            <p>Apply quantum mechanics principles to RSI-based cryptocurrency trading strategies</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Backtest Parameters</h4>
+                        <form id="backtest-form">
+                            <div class="form-group">
+                                <label for="crypto">Cryptocurrency</label>
+                                <select class="form-select" id="crypto" name="crypto">
+                                    {% for crypto in cryptos %}
+                                    <option value="{{ crypto }}" {% if crypto == 'ETH/USDT' %}selected{% endif %}>{{ crypto }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="timeframe">Timeframe</label>
+                                <select class="form-select" id="timeframe" name="timeframe">
+                                    {% for tf in timeframes %}
+                                    <option value="{{ tf }}" {% if tf == '1h' %}selected{% endif %}>{{ tf }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="start_date">Start Date</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ default_start_date }}">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="end_date">End Date</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ default_end_date }}">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="initial_capital">Initial Capital (USDT)</label>
+                                <input type="number" class="form-control" id="initial_capital" name="initial_capital" value="10000" min="1000" step="1000">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="strategy_type">Strategy Type</label>
+                                <select class="form-select" id="strategy_type" name="strategy_type">
+                                    <option value="conservative" selected>Conservative (66.67% Win Rate)</option>
+                                    <option value="balanced">Balanced (Default)</option>
+                                    <option value="aggressive">Aggressive (More Trades)</option>
+                                    <option value="ultra_selective">Ultra Selective (Legacy)</option>
+                                    <option value="optimal">Optimal (Legacy)</option>
+                                    <option value="high_precision">High Precision (Legacy)</option>
+                                    <option value="pattern_recognition">Pattern Recognition (Legacy)</option>
+                                    <option value="quantum_prob_conservative">Quantum Probability - Conservative</option>
+                                    <option value="quantum_prob_balanced">Quantum Probability - Balanced</option>
+                                    <option value="quantum_prob_aggressive">Quantum Probability - Aggressive</option>
+                                    <option value="quantum_stock_conservative">Quantum Stock - Conservative</option>
+                                    <option value="quantum_stock_balanced">Quantum Stock - Balanced</option>
+                                    <option value="quantum_stock_aggressive">Quantum Stock - Aggressive</option>
+                                    <option value="quantum_oscillator_conservative">Quantum Oscillator - Conservative</option>
+                                    <option value="quantum_oscillator_balanced">Quantum Oscillator - Balanced</option>
+                                    <option value="quantum_oscillator_aggressive">Quantum Oscillator - Aggressive</option>
+                                    <option value="quantum_anharmonic_conservative">Quantum Anharmonic - Conservative</option>
+                                    <option value="quantum_anharmonic_balanced">Quantum Anharmonic - Balanced</option>
+                                    <option value="quantum_anharmonic_aggressive">Quantum Anharmonic - Aggressive</option>
+                                    <option value="quantum_tunneling_conservative">Quantum Tunneling - Conservative</option>
+                                    <option value="quantum_tunneling_balanced">Quantum Tunneling - Balanced</option>
+                                    <option value="quantum_tunneling_aggressive">Quantum Tunneling - Aggressive</option>
+                                    <option value="compare_all">Compare All Strategies</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary mt-3 w-100">Run Backtest</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="quantum-explanation">
+                    <h5>How Quantum RSI Works</h5>
+                    <p>This strategy applies quantum mechanical principles to market behavior:</p>
+                    <ul>
+                        <li>RSI is treated as a quantum particle in a potential well</li>
+                        <li>Tunneling probability predicts market reversals</li>
+                        <li>Maxwell's Demon filter increases strategy precision</li>
+                        <li>Pattern recognition enhances entry signals</li>
+                    </ul>
+                </div>
+                
+                <div class="quantum-explanation" style="background-color: #f7f0ff; border-left: 4px solid #6610f2;">
+                    <h5>Quantum Probability Model</h5>
+                    <p>This advanced strategy applies quantum probability theory to asset returns:</p>
+                    <ul>
+                        <li>Asset returns modeled using a Schrödinger-like equation</li>
+                        <li>Multiple energy levels create multimodal return distributions</li>
+                        <li>Active Trading Intentions (ATI) represented through complex-valued probability amplitudes</li>
+                        <li>Conservative, Balanced, and Aggressive parameter sets target different risk profiles</li>
+                    </ul>
+                </div>
+                
+                <!-- Quantum Stock Model Explanation -->
+                <div class="mt-4 p-3" style="background-color: #e6f7ff; border-left: 5px solid #1890ff;">
+                    <h5>Quantum Stock Market Model (Zhang and Huang)</h5>
+                    <ul>
+                        <li>Treats stock prices as quantum particles within an infinite potential well</li>
+                        <li>Incorporates an external field to represent market information</li>
+                        <li>Uses the Schrödinger equation to model price evolution over time</li>
+                        <li>Predicts multi-modal return distributions based on field influence</li>
+                    </ul>
+                </div>
+
+                <!-- Quantum Oscillator Model Explanation -->
+                <div class="mt-4 p-3" style="background-color: #f2e8fd; border-left: 5px solid #7a43b6;">
+                    <h5>Quantum Oscillator Model of Stock Markets (David Orrell)</h5>
+                    <ul>
+                        <li>Models markets as quantum harmonic oscillators with discrete energy levels</li>
+                        <li>Each energy level corresponds to an integer number of transactions</li>
+                        <li>Derived by quantizing entropic forces representing buying/selling intentions</li>
+                        <li>Explains the non-Gaussian nature of returns and the square-root law of price impact</li>
+                        <li>Relates volatility to market spread through a quantum uncertainty framework</li>
+                    </ul>
+                </div>
+
+                <!-- Quantum Anharmonic Oscillator Model Explanation -->
+                <div class="mt-4 p-3" style="background-color: #fff0f5; border-left: 5px solid #e83e8c;">
+                    <h5>Quantum Anharmonic Oscillator Model</h5>
+                    <ul>
+                        <li>Extends the quantum oscillator with cubic (β) and quartic (γ) potential terms</li>
+                        <li>Models asymmetric return distributions with controlled skewness and kurtosis</li>
+                        <li>Captures market asymmetry between buying and selling pressure</li>
+                        <li>Explains "volatility smile" and fat-tailed distributions in financial markets</li>
+                        <li>Adapts to changing market regimes by estimating the quantum state from recent data</li>
+                    </ul>
+                </div>
+
+                <!-- Quantum Tunneling Model Explanation -->
+                <div class="mt-4 p-3" style="background-color: #fff8dc; border-left: 5px solid #ffd700;">
+                    <h5>Quantum Tunneling of Stock Price (Ovidiu Racorean)</h5>
+                    <ul>
+                        <li>Models explosive breakouts from range-bound markets as quantum tunneling events</li>
+                        <li>Uses financial time-independent Schrödinger equation to calculate tunneling probability</li>
+                        <li>Identifies that volatility drops dramatically before tunneling/breakout events</li>
+                        <li>Provides transmission coefficient to quantify probability of price penetrating support/resistance</li>
+                        <li>Mathematically explains why price can "tunnel through" barriers that should contain it</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="loading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Running backtest... This may take several minutes.</p>
+                </div>
+                
+                <div class="results">
+                    <h4 class="mb-4">Backtest Results</h4>
+                    
+                    <div id="metrics-container">
+                        <!-- Metrics will be inserted here -->
+                    </div>
+                    
+                    <div class="plot-container">
+                        <h5 class="mb-3">Performance Visualization</h5>
+                        <!-- Desktop version (with legend outside) -->
+                        <img id="plot-image" class="plot-image d-none d-md-inline-block" src="" alt="Backtest Results Plot" onClick="openModal()">
+                        <!-- Mobile-friendly version (legend inside) -->
+                        <img id="plot-image-mobile" class="plot-image d-md-none" src="" alt="Backtest Results Plot" onClick="openModal()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chart Modal -->
+    <div id="chartModal" class="chart-modal">
+        <span class="chart-close" onclick="closeModal()">&times;</span>
+        <div class="chart-modal-content">
+            <img id="modal-chart-image" class="chart-modal-image" src="" alt="Full Size Chart">
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomIn()">+</button>
+                <button class="zoom-btn" onclick="zoomOut()">-</button>
+                <button class="zoom-btn" onclick="resetZoom()">↺</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Chart modal and zoom functionality
+        const modal = document.getElementById("chartModal");
+        const modalImg = document.getElementById("modal-chart-image");
+        let currentZoom = 1;
+        
+        function openModal() {
+            modal.style.display = "block";
+            modalImg.src = document.getElementById("plot-image").src;
+            currentZoom = 1;
+            modalImg.style.transform = `scale(${currentZoom})`;
+        }
+        
+        function closeModal() {
+            modal.style.display = "none";
+        }
+        
+        function zoomIn() {
+            currentZoom += 0.1;
+            if (currentZoom > 3) currentZoom = 3; // Max zoom
+            modalImg.style.transform = `scale(${currentZoom})`;
+        }
+        
+        function zoomOut() {
+            currentZoom -= 0.1;
+            if (currentZoom < 0.5) currentZoom = 0.5; // Min zoom
+            modalImg.style.transform = `scale(${currentZoom})`;
+        }
+        
+        function resetZoom() {
+            currentZoom = 1;
+            modalImg.style.transform = `scale(${currentZoom})`;
+        }
+        
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        
+        document.getElementById('backtest-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            // Show loading indicator
+            document.querySelector('.loading').style.display = 'block';
+            document.querySelector('.results').style.display = 'none';
+            
+            // Send request to backend
+            fetch('/run_backtest', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading indicator
+                document.querySelector('.loading').style.display = 'none';
+                
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    return;
+                }
+                
+                // Display results
+                displayResults(data);
+            })
+            .catch(error => {
+                document.querySelector('.loading').style.display = 'none';
+                alert('Error: ' + error.message);
+            });
+        });
+        
+        function displayResults(data) {
+            // Show results container
+            document.querySelector('.results').style.display = 'block';
+            
+            // Clear previous metrics
+            const metricsContainer = document.getElementById('metrics-container');
+            metricsContainer.innerHTML = '';
+            
+            // Add metrics for each strategy
+            for (const [strategy, metrics] of Object.entries(data.results)) {
+                const metricCard = document.createElement('div');
+                metricCard.className = 'metric-card';
+                
+                metricCard.innerHTML = `
+                    <h5>${strategy}</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <p><strong>Win Rate:</strong> ${metrics['Win Rate [%]']}</p>
+                            <p><strong>Net Return:</strong> ${metrics['Return [%]']}</p>
+                            <p><strong>Net Profit:</strong> ${metrics['Net Profit']}</p>
+                        </div>
+                        <div class="col-6">
+                            <p><strong>Max Drawdown:</strong> ${metrics['Max Drawdown [%]']}</p>
+                            <p><strong>Profit Factor:</strong> ${metrics['Profit Factor']}</p>
+                            <p><strong>Total Trades:</strong> ${metrics['Total Trades']}</p>
+                        </div>
+                    </div>
+                `;
+                
+                metricsContainer.appendChild(metricCard);
+            }
+            
+            // Display plots - desktop and mobile versions
+            if (data.plot) {
+                document.getElementById('plot-image').src = 'data:image/png;base64,' + data.plot;
+                
+                // Use mobile-specific plot if available, otherwise fall back to the desktop version
+                const mobileImgSrc = data.mobile_plot ? 
+                    'data:image/png;base64,' + data.mobile_plot :
+                    'data:image/png;base64,' + data.plot;
+                document.getElementById('plot-image-mobile').src = mobileImgSrc;
+            }
+        }
+    </script>
+</body>
+</html> 
